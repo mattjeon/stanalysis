@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper Element 의 namespace Attribute 에는 MyBatis XML Mapper 와 매핑될 Java Interface Mapper 와 동일한 패키지 위치로 작성합니다 -->
+<mapper namespace="com.mattjeon.stock.mapper.RecommendMapper">
+    <resultMap id="recommendMap" type="com.mattjeon.stock.vo.RecommendVo">
+        <id property="companyCode"                   column="company_code" />               
+		<result property="companyName"               column="company_name" />  	                    
+		<result property="regDate"                   column="reg_date" />                           
+		<result property="tradeSignal"               column="trade_signal" />                       
+		<result property="updownRatio"               column="updown_ratio" />                       
+		<result property="maxUpdownRatio"               column="max_updown_ratio" />                       
+		<result property="cnt"       	column="cnt" />
+    </resultMap>
+   
+    <insert id="addRecommendCompany" >
+	    INSERT INTO recommend_company
+			(COMPANY_CODE,
+			REG_DATE,
+			TRADE_SIGNAL,
+			INSERT_DT,
+			INSERT_ID,
+			UPDATE_DT,
+			UPDATE_ID)
+		VALUES (
+			#{companyCode},
+			#{regDate},
+			#{tradeSignal},
+		    NOW(),
+			'system',
+			NOW(),
+			'system')
+        
+    </insert>
+    
+    
+ 	<select id="getRecommendCompanyDateList" resultMap="recommendMap">
+		<![CDATA[
+		SELECT a.REG_DATE		AS reg_date
+		    ,  COUNT(a.company_code) AS cnt
+		FROM recommend_company a
+		GROUP BY a.reg_date
+		ORDER BY a.reg_date DESC
+		 ]]>
+     </select>
+ 
+
+    
+	<select id="getRecommendCompanyListBySignal" resultMap="recommendMap">
+		<![CDATA[
+		 SELECT a.COMPANY_CODE                  AS company_code                 
+		      , b.COMPANY_NAME  	              AS company_name  	            
+		      , a.REG_DATE                      AS reg_date                    
+		      , a.TRADE_SIGNAL                  AS trade_signal                
+		FROM recommend_company a
+		    , company b
+		WHERE a.company_code = b.company_code
+          AND a.REG_DATE = #{regDate}
+          AND a.trade_signal >= 1
+ 		ORDER BY a.TRADE_SIGNAL DESC 
+		 ]]>
+     </select>
+
+     	
+     
+     <select id="getRecommendCompanyListByMonthlyReview" resultMap="recommendMap">
+		<![CDATA[
+		 SELECT a.COMPANY_CODE                  AS company_code                 
+		      , b.COMPANY_NAME  	              AS company_name  	            
+		      , a.REG_DATE                      AS reg_date                    
+		      , a.TRADE_SIGNAL                  AS trade_signal                
+              , (( select CLOSE_PRICE 
+                   from company_price 
+                  where company_code = a.company_code
+                order by reg_date desc limit 1 ) - d.CLOSE_PRICE )*100 / d.close_price AS updown_ratio
+   			  , (( Select MAX(t.high_price)
+                  from stock.company_price t
+				 where t.reg_date > a.reg_date
+                   and t.company_code = a.company_code ) - d.CLOSE_PRICE )*100 / d.close_price AS max_updown_ratio
+ 		FROM recommend_company a
+		    , company b
+            , company_price d
+ 		WHERE a.COMPANY_CODE = b.COMPANY_CODE
+          AND a.company_code = d.company_code
+          AND a.reg_date = d.reg_date
+		  AND a.TRADE_SIGNAL >= 1
+		  AND a.reg_date BETWEEN DATE_FORMAT(DATE_SUB(#{regDate}, INTERVAL 30 DAY), '%Y%m%d') AND #{regDate}
+       ORDER BY a.reg_date, a.trade_signal DESC 
+		 ]]>
+     </select> 
+	
+    
+	<select id="getRecommendCompanyListByAllRecommend" resultMap="recommendMap">
+		 <![CDATA[
+		 SELECT a.COMPANY_CODE                  AS company_code                 
+		      , b.COMPANY_NAME  	              AS company_name  	            
+		      , a.REG_DATE                      AS reg_date                    
+		      , a.TRADE_SIGNAL                  AS trade_signal                
+ 		FROM recommend_company a
+		    , company b
+ 		WHERE a.COMPANY_CODE = b.COMPANY_CODE
+		  AND a.reg_date = #{regDate}
+       ORDER BY a.company_code, a.reg_date
+		  
+		 ]]>
+     </select>
+
+</mapper>
+
+

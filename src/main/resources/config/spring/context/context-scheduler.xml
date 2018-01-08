@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/batch"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/batch     http://www.springframework.org/schema/batch/spring-batch.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+ 
+    <!-- 
+    “MyJob” 컴포넌트를  “JobDetailBean“에 Injection 하고,
+	“JobDetailBean“은 “TriggerBean“에 Injection을 합니다.
+	최종적으로 “TriggerBean“을  “SchdulerBean“에 Injection을 함으로써
+	하나의 Job에 대한 스케줄러 설정이 끝나게 됩니다.
+
+	MyJob : 개발자가 직접 작성할 비즈니스 컴포넌트 입니다. 	즉, Job 로직을 구현합니다.
+	JobDetailBean : Job, Job 속성 및 파라미터 정보를 aggregate하는 컴포넌트 입니다.
+	TriggerBean : Job 실행 시작, 주기등을 설정하는 컴포넌트 입니다.
+	SchedulerBean : 모든 Job 설정 정보를 갖고 Manager Thread를 생성해서
+	해당 시간에 Job를 실행하는 컴포넌트 입니다.
+     -->
+ 
+     <bean id="dummyTask" class="com.mattjeon.stock.batch.DummyTask"/>
+ 
+     <bean name="dummyJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.mattjeon.stock.batch.DummyJobBean"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="dummyTask" value-ref="dummyTask"/>
+            </map>
+        </property>
+     </bean>
+ 
+    <!--<bean id="simpleTrigger"-->
+          <!--class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean"-->
+            <!--p:jobDetail-ref="dummyJob"-->
+            <!--p:repeatInterval="3000"-->
+            <!--p:startDelay="1000"/>-->
+             
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="dummyJob"
+          p:startDelay="1000"
+          p:cronExpression="30 12 * * * ?"/>  
+    <!-- 
+    첫번째    분        0-59
+	두번째    시        0-23
+	세번째    일        0-31
+	네번째    월        1-12
+	다섯번째  요일      0-7 (0 또는 7=일요일, 1=월, 2=화,...)
+	여섯번째  명령어    실행할 명령을 한줄로 쓴다.
+	
+	예)
+	20  2     *  *  6  명령어 => 매주 토요일 새벽 2:20
+	0  4-6   *  *  *  명령어 => 매일 오후 4,5,6시
+	5  */2 *  *  * 명령어 => 매일 2시간간격으로 5분대에
+	15  1   1  *  *  명령어 => 매월 1일 새벽 1:15
+	30  0   1  1,7  *  명령어 => 1,7월 1일 새벽 0:30
+     -->     
+ 
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"/>
+            </list>
+        </property>
+    </bean>
+ 
+</beans>

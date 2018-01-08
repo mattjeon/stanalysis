@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper Element 의 namespace Attribute 에는 MyBatis XML Mapper 와 매핑될 Java Interface Mapper 와 동일한 패키지 위치로 작성합니다 -->
+<mapper namespace="com.mattjeon.stock.mapper.DurationMapper">
+    <resultMap id="durationMap" type="com.mattjeon.stock.vo.DurationVo">
+        <result property="companyCode"       column="company_code" />
+        <result property="companyName"       column="company_name" />
+        <result property="industryName"       column="industry_name" />
+        <result property="industryCode"       column="industry_code" />
+        <result property="regDate"       column="reg_date" />
+        <result property="closePrice"  column="close_price" />
+        <result property="volume"       column="volume" />
+        <result property="volumeRatio"       column="volume_ratio" />
+        
+        <result property="personalSum"     column="personal_sum" />
+        <result property="powerSum"    	column="power_sum" />
+        <result property="leaderSum"    	column="leader_sum" />
+        <result property="foreignerSum"    column="foreigner_sum" />
+        <result property="orgSumSum"       column="org_sum_sum" />
+        <result property="finInvestSum"    column="fin_invest_sum" />
+        <result property="insuranceSum"    column="insurance_sum" />
+        <result property="investTrustSum"  column="invest_trust_sum" />
+        <result property="bankSum"         column="bank_sum" />
+        <result property="etcFinSum"       column="etc_fin_sum" />
+        <result property="pensionSum"      column="pension_sum" />
+        <result property="etcCorpSum"      column="etc_corp_sum" />
+        <result property="etcForeignerSum" column="etc_foreigner_sum" />
+        <result property="privateFundSum"  column="private_fund_sum" />
+        <result property="nationSum"       column="nation_sum" />
+
+        <result property="personalAvgBuyPrice"     column="personal_avg_buy_price" />
+        <result property="powerAvgBuyPrice"        column="power_avg_buy_price" />
+        <result property="leaderAvgBuyPrice"        column="leader_avg_buy_price" />
+        <result property="foreignerAvgBuyPrice"    column="foreigner_avg_buy_price" />
+        <result property="orgSumAvgBuyPrice"       column="org_sum_avg_buy_price" />
+        <result property="finInvestAvgBuyPrice"    column="fin_invest_avg_buy_price" />
+        <result property="insuranceAvgBuyPrice"    column="insurance_avg_buy_price" />
+        <result property="investTrustAvgBuyPrice"  column="invest_trust_avg_buy_price" />
+        <result property="bankAvgBuyPrice"         column="bank_avg_buy_price" />
+        <result property="etcFinAvgBuyPrice"       column="etc_fin_avg_buy_price" />
+        <result property="pensionAvgBuyPrice"      column="pension_avg_buy_price" />
+        <result property="etcCorpAvgBuyPrice"      column="etc_corp_avg_buy_price" />
+        <result property="etcForeignerAvgBuyPrice" column="etc_foreigner_avg_buy_price" />
+        <result property="privateFundAvgBuyPrice"  column="private_fund_avg_buy_price" />
+        <result property="nationAvgBuyPrice"       column="nation_avg_buy_price" />
+        
+        <result property="personalAvgIncomeRate"     column="personal_avg_income_rate" />
+        <result property="powerAvgIncomeRate"        column="power_avg_income_rate" />
+        <result property="leaderAvgIncomeRate"        column="power_avg_income_rate" />
+        <result property="foreignerAvgIncomeRate"    column="foreigner_avg_income_rate" />
+        <result property="orgSumAvgIncomeRate"       column="org_sum_avg_income_rate" />
+        <result property="finInvestAvgIncomeRate"    column="fin_invest_avg_income_rate" />
+        <result property="insuranceAvgIncomeRate"    column="insurance_avg_income_rate" />
+        <result property="investTrustAvgIncomeRate"  column="invest_trust_avg_income_rate" />
+        <result property="bankAvgIncomeRate"         column="bank_avg_income_rate" />
+        <result property="etcFinAvgIncomeRate"       column="etc_fin_avg_income_rate" />
+        <result property="pensionAvgIncomeRate"      column="pension_avg_income_rate" />
+        <result property="etcCorpAvgIncomeRate"      column="etc_corp_avg_income_rate" />
+        <result property="etcForeignerAvgIncomeRate" column="etc_foreigner_avg_income_rate" />
+        <result property="privateFundAvgIncomeRate"  column="private_fund_avg_income_rate" />
+        <result property="nationAvgIncomeRate"       column="nation_avg_income_rate" />
+   
+   
+		<result property="deviation"               column="deviation" />
+				
+    </resultMap>
+
+    <select id="getInvestorDurationIncome" resultMap="durationMap">
+    	<![CDATA[
+		SELECT t.personal_sum AS personal_sum
+			 , t.power_sum AS power_sum
+			 , t.leader_sum AS leader_sum
+			 , t.FOREIGNER_sum AS foreigner_sum
+			 , t.ORG_SUM_sum  AS org_sum_sum
+			 , t.fin_invest_sum  AS fin_invest_sum
+			 , t.insurance_sum  AS insurance_sum
+			 , t.invest_trust_sum  AS invest_trust_sum
+			 , t.bank_sum  AS bank_sum
+			 , t.etc_fin_sum  AS etc_fin_sum
+			 , t.pension_sum  AS pension_sum
+			 , t.etc_corp_sum  AS etc_corp_sum
+			 , t.etc_foreigner_sum  AS etc_foreigner_sum
+			 , t.private_fund_sum  AS private_fund_sum
+			 , t.nation_sum  AS nation_sum
+		     , t.personal_avg_buy_price AS personal_avg_buy_price
+			 , t.power_avg_buy_price AS power_avg_buy_price
+			 , t.leader_avg_buy_price AS leader_avg_buy_price
+			 , t.FOREIGNER_avg_buy_price AS foreigner_avg_buy_price
+			 , t.ORG_sum_avg_buy_price  AS org_sum_avg_buy_price
+			 , t.fin_invest_avg_buy_price  AS fin_invest_avg_buy_price
+			 , t.insurance_avg_buy_price  AS insurance_avg_buy_price
+			 , t.invest_trust_avg_buy_price  AS invest_trust_avg_buy_price
+			 , t.bank_avg_buy_price  AS bank_avg_buy_price
+			 , t.etc_fin_avg_buy_price  AS etc_fin_avg_buy_price
+			 , t.pension_avg_buy_price  AS pension_avg_buy_price
+			 , t.etc_corp_avg_buy_price  AS etc_corp_avg_buy_price
+			 , t.etc_foreigner_avg_buy_price  AS etc_foreigner_avg_buy_price
+			 , t.private_fund_avg_buy_price  AS private_fund_avg_buy_price
+			 , t.nation_avg_buy_price  AS nation_avg_buy_price
+		     , (s.current_price - t.personal_avg_buy_price)*100/t.personal_avg_buy_price AS personal_avg_income_rate
+			 , (s.current_price - t.power_avg_buy_price)*100/t.power_avg_buy_price AS power_avg_income_rate
+			 , (s.current_price - t.leader_avg_buy_price)*100/t.leader_avg_buy_price AS leader_avg_income_rate
+			 , (s.current_price - t.FOREIGNER_avg_buy_price)*100/t.foreigner_avg_buy_price AS foreigner_avg_income_rate
+			 , (s.current_price - t.ORG_sum_avg_buy_price)*100/t.org_sum_avg_buy_price  AS org_sum_avg_income_rate
+			 , (s.current_price - t.fin_invest_avg_buy_price)*100/t.fin_invest_avg_buy_price  AS fin_invest_avg_income_rate
+			 , (s.current_price - t.insurance_avg_buy_price)*100/t.insurance_avg_buy_price  AS insurance_avg_income_rate
+			 , (s.current_price - t.invest_trust_avg_buy_price)*100/t.invest_trust_avg_buy_price  AS invest_trust_avg_income_rate
+			 , (s.current_price - t.bank_avg_buy_price)*100/t.bank_avg_buy_price  AS bank_avg_income_rate
+			 , (s.current_price - t.etc_fin_avg_buy_price)*100/t.etc_fin_avg_buy_price  AS etc_fin_avg_income_rate
+			 , (s.current_price - t.pension_avg_buy_price)*100/t.pension_avg_buy_price  AS pension_avg_income_rate
+			 , (s.current_price - t.etc_corp_avg_buy_price)*100/t.etc_corp_avg_buy_price  AS etc_corp_avg_income_rate
+			 , (s.current_price - t.etc_foreigner_avg_buy_price)*100/t.etc_foreigner_avg_buy_price  AS etc_foreigner_avg_income_rate
+			 , (s.current_price - t.private_fund_avg_buy_price)*100/t.private_fund_avg_buy_price  AS private_fund_avg_income_rate
+			 , (s.current_price - t.nation_avg_buy_price)*100/t.nation_avg_buy_price  AS nation_avg_income_rate           
+		 FROM  (  SELECT SUM(a.personal) AS personal_sum
+				 , SUM(a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp) AS power_sum
+				 , SUM(a.foreigner+ a.invest_trust + a.pension) AS leader_sum
+				 , SUM(a.FOREIGNER) AS foreigner_sum
+				 , SUM(a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)  AS org_sum_sum
+				 , SUM(a.fin_invest)  AS fin_invest_sum
+				 , SUM(a.insurance)  AS insurance_sum
+				 , SUM(a.invest_trust)  AS invest_trust_sum
+				 , SUM(a.bank)  AS bank_sum
+				 , SUM(a.etc_fin)  AS etc_fin_sum
+				 , SUM(a.pension)  AS pension_sum
+				 , SUM(a.etc_corp)  AS etc_corp_sum
+				 , SUM(a.etc_foreigner)  AS etc_foreigner_sum
+				 , SUM(a.private_fund)  AS private_fund_sum
+				 , SUM(a.nation)  AS nation_sum
+				 , SUM(IF(a.PERSONAL>0, a.PERSONAL, 0)*b.CLOSE_PRICE)/SUM(IF(a.PERSONAL>0, a.PERSONAL, 0)) AS personal_avg_buy_price
+				 , SUM(IF(a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp>0, a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp, 0)*b.CLOSE_PRICE)/SUM(IF(a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp>0, a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp, 0)) AS power_avg_buy_price
+				 , SUM(IF(a.foreigner+ a.invest_trust + a.pension>0, a.foreigner+a.invest_trust +a.pension, 0)*b.CLOSE_PRICE)/SUM(IF(a.foreigner+a.invest_trust + a.pension >0, a.foreigner+a.invest_trust + a.pension, 0)) AS leader_avg_buy_price
+				 , SUM(IF(a.FOREIGNER>0, a.FOREIGNER, 0)*b.CLOSE_PRICE)/SUM(IF(a.FOREIGNER>0, a.FOREIGNER, 0)) AS foreigner_avg_buy_price
+				 , SUM(IF(a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp>0, a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp, 0)*b.CLOSE_PRICE)/SUM(IF(a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp>0, a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp, 0)) AS org_sum_avg_buy_price
+				 , SUM(IF(a.fin_invest>0, a.fin_invest, 0)*b.CLOSE_PRICE)/SUM(IF(a.fin_invest>0, a.fin_invest, 0)) AS fin_invest_avg_buy_price
+				 , SUM(IF(a.insurance>0, a.insurance, 0)*b.CLOSE_PRICE)/SUM(IF(a.insurance>0, a.insurance, 0)) AS insurance_avg_buy_price
+				 , SUM(IF(a.invest_trust>0, a.invest_trust, 0)*b.CLOSE_PRICE)/SUM(IF(a.invest_trust>0, a.invest_trust, 0)) AS invest_trust_avg_buy_price
+				 , SUM(IF(a.bank>0, a.bank, 0)*b.CLOSE_PRICE)/SUM(IF(a.bank>0, a.bank, 0)) AS bank_avg_buy_price
+				 , SUM(IF(a.etc_fin>0, a.etc_fin, 0)*b.CLOSE_PRICE)/SUM(IF(a.etc_fin>0, a.etc_fin, 0)) AS etc_fin_avg_buy_price
+				 , SUM(IF(a.pension>0, a.pension, 0)*b.CLOSE_PRICE)/SUM(IF(a.pension>0, a.pension, 0)) AS pension_avg_buy_price
+				 , SUM(IF(a.etc_corp>0, a.etc_corp, 0)*b.CLOSE_PRICE)/SUM(IF(a.etc_corp>0, a.etc_corp, 0)) AS etc_corp_avg_buy_price
+				 , SUM(IF(a.etc_foreigner>0, a.etc_foreigner, 0)*b.CLOSE_PRICE)/SUM(IF(a.etc_foreigner>0, a.etc_foreigner, 0)) AS etc_foreigner_avg_buy_price
+				 , SUM(IF(a.private_fund>0, a.private_fund, 0)*b.CLOSE_PRICE)/SUM(IF(a.private_fund>0, a.private_fund, 0)) AS private_fund_avg_buy_price
+				 , SUM(IF(a.nation>0, a.nation, 0)*b.CLOSE_PRICE)/SUM(IF(a.nation>0, a.nation, 0)) AS nation_avg_buy_price
+			  FROM stock.company_investors a
+				 , stock.company_price b             
+			WHERE a.COMPANY_CODE = #{companyCode}
+			  AND a.COMPANY_CODE = b.COMPANY_CODE
+			  AND a.reg_date = b.reg_date
+			   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate} ) t
+		  , ( select u.CLOSE_PRICE as current_price
+					   from stock.company_price u
+					   where u.COMPANY_CODE  = #{companyCode}
+						and u.reg_date = #{toDate} ) s
+		]]>
+    </select>
+    
+       
+	<select id="getCompanyCommercialBand" resultMap="durationMap">
+		 <![CDATA[
+		SELECT distinct FLOOR( ( a.CLOSE_PRICE / c.tgap  ) ) AS gap
+		     , avg(a.CLOSE_PRICE) AS close_price
+		     , sum(a.VOLUME)      AS volume
+		     , sum(a.volume)*100/ d.volume_sum AS volume_ratio
+			 , (avg(a.CLOSE_PRICE) - b.current_price )*100 / b.current_price  AS deviation
+		       , SUM(i.PERSONAL) AS personal_sum
+			   , SUM(i.foreigner+i.fin_invest + i.insurance + i.invest_trust + i.bank + i.etc_fin + i.pension + i.private_fund + i.nation + i.etc_foreigner+ i.etc_corp) AS power_sum
+			   , SUM(i.foreigner+ i.invest_trust + i.pension ) AS leader_sum
+			   , SUM(i.FOREIGNER) AS foreigner_sum
+			   , SUM(i.fin_invest + i.insurance + i.invest_trust + i.bank + i.etc_fin + i.pension + i.private_fund + i.nation + i.etc_foreigner+ i.etc_corp)  AS org_sum_sum
+			   , SUM(i.fin_invest)  AS fin_invest_sum
+			   , SUM(i.insurance)  AS insurance_sum
+			   , SUM(i.invest_trust)  AS invest_trust_sum
+			   , SUM(i.bank)  AS bank_sum
+			   , SUM(i.etc_fin)  AS etc_fin_sum
+			   , SUM(i.pension)  AS pension_sum
+			   , SUM(i.etc_corp)  AS etc_corp_sum
+			   , SUM(i.etc_foreigner)  AS etc_foreigner_sum
+			   , SUM(i.private_fund)  AS private_fund_sum
+			   , SUM(i.nation)  AS nation_sum
+		  FROM stock.company_price a
+			 , stock.company_investors i
+		     , ( select u.CLOSE_PRICE as current_price
+				   from stock.company_price u
+			       where u.COMPANY_CODE  = #{companyCode}
+                        order by u.REG_DATE desc
+                         LIMIT 1 ) b
+		     , ( SELECT  (max(t.CLOSE_PRICE)-min(t.CLOSE_PRICE))/19 AS tgap
+					  FROM stock.company_price t
+					 WHERE t.COMPANY_CODE = #{companyCode}
+					   AND t.reg_date BETWEEN #{fromDate} AND #{toDate}
+					) c
+			 , ( SELECT SUM(t.volume) AS volume_sum
+					FROM stock.company_price t
+				   WHERE t.COMPANY_CODE =  #{companyCode}
+					 AND t.reg_date BETWEEN  #{fromDate} AND #{toDate}
+                    ) d
+		 WHERE a.company_code = i.company_code
+           AND a.reg_date = i.reg_date
+		   AND a.COMPANY_CODE = #{companyCode}
+		   AND a.reg_date BETWEEN  #{fromDate} AND #{toDate}
+		 group by gap
+		 order by gap desc
+		 ]]>
+     </select>    
+  
+	<!-- Industry -->
+
+   	<select id="getIndustryInvestorSumByDurationListByPower" resultMap="durationMap">
+		 <![CDATA[
+		 SELECT  b.industry_name  AS industry_name
+		       , b.INDUSTRY_CODE  AS industry_code
+		       , SUM(a.PERSONAL) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension) ) AS leader_sum
+			   , SUM(a.FOREIGNER) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp))  AS org_sum_sum
+			   , SUM(a.fin_invest)  AS fin_invest_sum
+			   , SUM(a.insurance)  AS insurance_sum
+			   , SUM(a.invest_trust)  AS invest_trust_sum
+			   , SUM(a.bank)  AS bank_sum
+			   , SUM(a.etc_fin)  AS etc_fin_sum
+			   , SUM(a.pension)  AS pension_sum
+			   , SUM(a.etc_corp)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner)  AS etc_foreigner_sum
+			   , SUM(a.private_fund)  AS private_fund_sum
+			   , SUM(a.nation)  AS nation_sum
+		  FROM industry_investors a
+		     , industry b
+		     , industry_price c
+		 WHERE a.industry_code = b.industry_code
+		   AND a.industry_code = c.industry_code
+		   AND b.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.industry_code, b.industry_name
+		   ORDER BY power_sum DESC
+		 ]]>
+     </select>
+
+   	   	<select id="getIndustryInvestorSumByDurationListByLeader" resultMap="durationMap">
+		 <![CDATA[
+		 SELECT  b.industry_name  AS industry_name
+		       , b.INDUSTRY_CODE  AS industry_code
+		       , SUM(a.PERSONAL) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension) ) AS leader_sum
+			   , SUM(a.FOREIGNER) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp))  AS org_sum_sum
+			   , SUM(a.fin_invest)  AS fin_invest_sum
+			   , SUM(a.insurance)  AS insurance_sum
+			   , SUM(a.invest_trust)  AS invest_trust_sum
+			   , SUM(a.bank)  AS bank_sum
+			   , SUM(a.etc_fin)  AS etc_fin_sum
+			   , SUM(a.pension)  AS pension_sum
+			   , SUM(a.etc_corp)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner)  AS etc_foreigner_sum
+			   , SUM(a.private_fund)  AS private_fund_sum
+			   , SUM(a.nation)  AS nation_sum
+		  FROM industry_investors a
+		     , industry b
+		     , industry_price c
+		 WHERE a.industry_code = b.industry_code
+		   AND a.industry_code = c.industry_code
+		   AND b.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.industry_code, b.industry_name
+		   ORDER BY leader_sum DESC
+		 ]]>
+      </select>
+     
+      <select id="getIndustryInvestorSumByDurationListByForeigner" resultMap="durationMap">
+		 <![CDATA[
+		 SELECT  b.industry_name  AS industry_name
+		       , b.INDUSTRY_CODE  AS industry_code
+		       , SUM(a.PERSONAL) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension) ) AS leader_sum
+			   , SUM(a.FOREIGNER) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp))  AS org_sum_sum
+			   , SUM(a.fin_invest)  AS fin_invest_sum
+			   , SUM(a.insurance)  AS insurance_sum
+			   , SUM(a.invest_trust)  AS invest_trust_sum
+			   , SUM(a.bank)  AS bank_sum
+			   , SUM(a.etc_fin)  AS etc_fin_sum
+			   , SUM(a.pension)  AS pension_sum
+			   , SUM(a.etc_corp)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner)  AS etc_foreigner_sum
+			   , SUM(a.private_fund)  AS private_fund_sum
+			   , SUM(a.nation)  AS nation_sum
+		  FROM industry_investors a
+		     , industry b
+		     , industry_price c
+		 WHERE a.industry_code = b.industry_code
+		   AND a.industry_code = c.industry_code
+		   AND b.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.industry_code, b.industry_name
+		   ORDER BY foreigner_sum DESC
+		 ]]>
+     </select>
+     
+      <select id="getIndustryInvestorSumByDurationListByOrgSum" resultMap="durationMap">
+		 <![CDATA[
+		 SELECT  b.industry_name  AS industry_name
+		       , b.INDUSTRY_CODE  AS industry_code
+		       , SUM(a.PERSONAL) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension) ) AS leader_sum
+			   , SUM(a.FOREIGNER) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp))  AS org_sum_sum
+			   , SUM(a.fin_invest)  AS fin_invest_sum
+			   , SUM(a.insurance)  AS insurance_sum
+			   , SUM(a.invest_trust)  AS invest_trust_sum
+			   , SUM(a.bank)  AS bank_sum
+			   , SUM(a.etc_fin)  AS etc_fin_sum
+			   , SUM(a.pension)  AS pension_sum
+			   , SUM(a.etc_corp)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner)  AS etc_foreigner_sum
+			   , SUM(a.private_fund)  AS private_fund_sum
+			   , SUM(a.nation)  AS nation_sum
+		  FROM industry_investors a
+		     , industry b
+		     , industry_price c
+		 WHERE a.industry_code = b.industry_code
+		   AND a.industry_code = c.industry_code
+		   AND b.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.industry_code, b.industry_name
+		   ORDER BY org_sum_sum DESC
+		 ]]>
+     </select>
+     
+      
+ <!-- Company -->    
+ 
+   	<select id="getCompanyInvestorSumByDurationListByPower" resultMap="durationMap">
+		 <![CDATA[
+		SELECT  b.company_name  AS company_name
+		       , b.company_CODE  AS company_code
+               , d.industry_name AS industry_name
+		       , SUM(a.PERSONAL*c.CLOSE_PRICE) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension)*c.CLOSE_PRICE ) AS leader_sum
+			   , SUM(a.FOREIGNER*c.CLOSE_PRICE) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE)  AS org_sum_sum
+			   , SUM(a.fin_invest*c.CLOSE_PRICE)  AS fin_invest_sum
+			   , SUM(a.insurance*c.CLOSE_PRICE)  AS insurance_sum
+			   , SUM(a.invest_trust*c.CLOSE_PRICE)  AS invest_trust_sum
+			   , SUM(a.bank*c.CLOSE_PRICE)  AS bank_sum
+			   , SUM(a.etc_fin*c.CLOSE_PRICE)  AS etc_fin_sum
+			   , SUM(a.pension*c.CLOSE_PRICE)  AS pension_sum
+			   , SUM(a.etc_corp*c.CLOSE_PRICE)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner*c.CLOSE_PRICE)  AS etc_foreigner_sum
+			   , SUM(a.private_fund*c.CLOSE_PRICE)  AS private_fund_sum
+			   , SUM(a.nation*c.CLOSE_PRICE)  AS nation_sum
+		  FROM stock.company_investors a
+		     , stock.company b
+		     , stock.company_price c
+             , stock.industry d
+		 WHERE a.company_code = b.company_code
+		   AND a.company_code = c.company_code
+           AND b.industry_code = d.industry_code
+		   AND d.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.company_code, b.company_name, d.industry_name
+		   ORDER BY power_sum DESC
+           limit 10
+		 ]]>
+     </select>
+
+   	 <select id="getCompanyInvestorSumByDurationListByLeader" resultMap="durationMap">
+		 <![CDATA[
+		SELECT  b.company_name  AS company_name
+		       , b.company_CODE  AS company_code
+               , d.industry_name AS industry_name
+		       , SUM(a.PERSONAL*c.CLOSE_PRICE) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension)*c.CLOSE_PRICE ) AS leader_sum
+			   , SUM(a.FOREIGNER*c.CLOSE_PRICE) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE)  AS org_sum_sum
+			   , SUM(a.fin_invest*c.CLOSE_PRICE)  AS fin_invest_sum
+			   , SUM(a.insurance*c.CLOSE_PRICE)  AS insurance_sum
+			   , SUM(a.invest_trust*c.CLOSE_PRICE)  AS invest_trust_sum
+			   , SUM(a.bank*c.CLOSE_PRICE)  AS bank_sum
+			   , SUM(a.etc_fin*c.CLOSE_PRICE)  AS etc_fin_sum
+			   , SUM(a.pension*c.CLOSE_PRICE)  AS pension_sum
+			   , SUM(a.etc_corp*c.CLOSE_PRICE)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner*c.CLOSE_PRICE)  AS etc_foreigner_sum
+			   , SUM(a.private_fund*c.CLOSE_PRICE)  AS private_fund_sum
+			   , SUM(a.nation*c.CLOSE_PRICE)  AS nation_sum
+		  FROM stock.company_investors a
+		     , stock.company b
+		     , stock.company_price c
+             , stock.industry d
+		 WHERE a.company_code = b.company_code
+		   AND a.company_code = c.company_code
+           AND b.industry_code = d.industry_code
+		   AND d.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.company_code, b.company_name, d.industry_name
+		   ORDER BY leader_sum DESC
+           limit 10
+		 ]]>
+      </select>
+     
+      <select id="getCompanyInvestorSumByDurationListByForeigner" resultMap="durationMap">
+		 <![CDATA[
+		SELECT  b.company_name  AS company_name
+		       , b.company_CODE  AS company_code
+               , d.industry_name AS industry_name
+		       , SUM(a.PERSONAL*c.CLOSE_PRICE) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension)*c.CLOSE_PRICE ) AS leader_sum
+			   , SUM(a.FOREIGNER*c.CLOSE_PRICE) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE)  AS org_sum_sum
+			   , SUM(a.fin_invest*c.CLOSE_PRICE)  AS fin_invest_sum
+			   , SUM(a.insurance*c.CLOSE_PRICE)  AS insurance_sum
+			   , SUM(a.invest_trust*c.CLOSE_PRICE)  AS invest_trust_sum
+			   , SUM(a.bank*c.CLOSE_PRICE)  AS bank_sum
+			   , SUM(a.etc_fin*c.CLOSE_PRICE)  AS etc_fin_sum
+			   , SUM(a.pension*c.CLOSE_PRICE)  AS pension_sum
+			   , SUM(a.etc_corp*c.CLOSE_PRICE)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner*c.CLOSE_PRICE)  AS etc_foreigner_sum
+			   , SUM(a.private_fund*c.CLOSE_PRICE)  AS private_fund_sum
+			   , SUM(a.nation*c.CLOSE_PRICE)  AS nation_sum
+		  FROM stock.company_investors a
+		     , stock.company b
+		     , stock.company_price c
+             , stock.industry d
+		 WHERE a.company_code = b.company_code
+		   AND a.company_code = c.company_code
+           AND b.industry_code = d.industry_code
+		   AND d.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.company_code, b.company_name, d.industry_name
+		   ORDER BY foreigner_sum DESC
+           limit 10
+		 ]]>
+     </select>
+     
+      <select id="getCompanyInvestorSumByDurationListByOrgSum" resultMap="durationMap">
+		 <![CDATA[
+		SELECT  b.company_name  AS company_name
+		       , b.company_CODE  AS company_code
+               , d.industry_name AS industry_name
+		       , SUM(a.PERSONAL*c.CLOSE_PRICE) AS personal_sum
+			   , SUM((a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE) AS power_sum
+			   , SUM((a.foreigner+ a.invest_trust + a.pension)*c.CLOSE_PRICE ) AS leader_sum
+			   , SUM(a.FOREIGNER*c.CLOSE_PRICE) AS foreigner_sum
+			   , SUM((a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp)*c.CLOSE_PRICE)  AS org_sum_sum
+			   , SUM(a.fin_invest*c.CLOSE_PRICE)  AS fin_invest_sum
+			   , SUM(a.insurance*c.CLOSE_PRICE)  AS insurance_sum
+			   , SUM(a.invest_trust*c.CLOSE_PRICE)  AS invest_trust_sum
+			   , SUM(a.bank*c.CLOSE_PRICE)  AS bank_sum
+			   , SUM(a.etc_fin*c.CLOSE_PRICE)  AS etc_fin_sum
+			   , SUM(a.pension*c.CLOSE_PRICE)  AS pension_sum
+			   , SUM(a.etc_corp*c.CLOSE_PRICE)  AS etc_corp_sum
+			   , SUM(a.etc_foreigner*c.CLOSE_PRICE)  AS etc_foreigner_sum
+			   , SUM(a.private_fund*c.CLOSE_PRICE)  AS private_fund_sum
+			   , SUM(a.nation*c.CLOSE_PRICE)  AS nation_sum
+		  FROM stock.company_investors a
+		     , stock.company b
+		     , stock.company_price c
+             , stock.industry d
+		 WHERE a.company_code = b.company_code
+		   AND a.company_code = c.company_code
+           AND b.industry_code = d.industry_code
+		   AND d.industry_code BETWEEN #{fromCode} AND  #{toCode}
+		   AND a.reg_date = c.reg_date
+		   AND a.reg_date BETWEEN #{fromDate} AND  #{toDate}
+		   GROUP BY a.company_code, b.company_name, d.industry_name
+		   ORDER BY org_sum_sum DESC
+           limit 10
+		 ]]>
+     </select>
+
+     
+</mapper>
+
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper Element 의 namespace Attribute 에는 MyBatis XML Mapper 와 매핑될 Java Interface Mapper 와 동일한 패키지 위치로 작성합니다 -->
+<mapper namespace="com.mattjeon.stock.mapper.CommonMapper"> 
+    <resultMap id="commonMap" type="com.mattjeon.stock.vo.CommonVo">
+        <id     property="companyCode"    column="company_code" />
+        <result property="companyName"       column="company_name" />
+        <result property="marketKind"      column="market_kind" />
+        <result property="kospi200"       column="kospi200" /> 
+        <result property="industryCode"   column="industry_code" />
+        <result property="industryName"   column="industry_name" />
+        <result property="industryKind" column="industry_kind" />
+        
+    </resultMap>
+
+    <select id="getAllCompanyList" resultMap="commonMap">
+        SELECT company_code
+             , company_name
+             , market_kind
+             , industry_code
+             , kospi200
+        FROM   company 
+           
+    </select>
+
+    <select id="getCompany" resultMap="commonMap">
+       SELECT company_code
+             , company_name
+             , market_kind
+             , industry_code
+             , kospi200
+         FROM company
+        WHERE company_code = #{companyCode}
+    </select>
+
+	
+     
+     <select id="getAllIndustryList" resultMap="commonMap">
+       <![CDATA[
+        SELECT DISTINCT a.INDUSTRY_CODE AS industry_code    
+			, a.INDUSTRY_NAME AS industry_name
+			, a.industry_kind AS industry_kind
+		 FROM stock.industry a 
+			, stock.industry_price  b
+			, stock.industry_investors c
+		WHERE a.INDUSTRY_CODE = b.INDUSTRY_CODE
+	  	  AND a.INDUSTRY_CODE = c.INDUSTRY_CODE
+  		  AND b.REG_DATE = c.REG_DATE
+		 ]]>
+    </select>
+    
+    
+</mapper>

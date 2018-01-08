@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper Element 의 namespace Attribute 에는 MyBatis XML Mapper 와 매핑될 Java Interface Mapper 와 동일한 패키지 위치로 작성합니다 -->
+<mapper namespace="com.mattjeon.stock.mapper.RawDataMapper">
+    <resultMap id="rawDataMap" type="com.mattjeon.stock.vo.IndicatorVo">
+        <result property="companyCode"       column="company_code" />
+        <result property="companyName"       column="company_name" />
+        <result property="regDate"       column="reg_date" />
+        <result property="openPrice"  column="open_price" /> 
+        <result property="highPrice"  column="high_price" />
+        <result property="lowPrice"  column="low_price" />
+        <result property="closePrice"  column="close_price" />
+        <result property="volume"       column="volume" />
+        <result property="updownRatio"  column="updown_ratio" />
+        <result property="industryPrice"  column="industry_price" />
+
+        <result property="personal"     column="personal" />
+        <result property="power"    column="power" />
+        <result property="leader"    column="leader" />
+        <result property="foreigner"    column="foreigner" />
+        <result property="orgSum"       column="org_sum" />
+        <result property="finInvest"    column="fin_invest" />
+        <result property="insurance"    column="insurance" />
+        <result property="investTrust"  column="invest_trust" />
+        <result property="bank"         column="bank" />
+        <result property="etcFin"       column="etc_fin" />
+        <result property="pension"      column="pension" />
+        <result property="etcCorp"      column="etc_corp" />
+        <result property="etcForeigner" column="etc_foreigner" />
+        <result property="privateFund"  column="private_fund" />
+        <result property="nation"       column="nation" />           
+    </resultMap>
+
+    
+    <select id="getCompanyRawData" resultMap="rawDataMap">
+       <![CDATA[
+       SELECT a.company_code
+            , a.reg_date
+            , c.company_name
+            , b.open_price
+            , b.high_price
+            , b.low_price
+            , b.close_price
+            , ifnull(( SELECT d.close_price
+                 FROM stock.industry_price d
+                 WHERE d.reg_date = b.reg_date
+                  AND d.industry_code = c.industry_code), 0) AS industry_price
+            , b.volume
+            , CAST(IF(b.yd_ratio < 0 , -b.updown_ratio, b.updown_ratio)  AS DECIMAL(5,2))   AS updown_ratio
+            , a.personal AS personal
+            , (a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp) AS power
+            , (a.foreigner+ a.invest_trust +  a.pension ) AS leader
+            , a.foreigner AS foreigner
+            , ( a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp ) AS org_sum
+            , a.fin_invest AS fin_invest
+            , a.insurance AS insurance
+            , a.invest_trust AS invest_trust
+            , a.bank AS bank
+            , a.etc_fin AS etc_fin
+            , a.pension AS pension
+            , a.etc_corp AS etc_corp
+            , a.etc_foreigner AS etc_foreigner
+            , a.private_fund AS private_fund
+            , a.nation AS nation
+         FROM stock.company_investors a
+            , stock.company_price b
+            , stock.company c
+        WHERE a.company_code = b.company_code
+          AND a.company_code = c.company_code
+          AND a.reg_date = b.reg_date
+          AND a.company_code = #{companyCode}
+         ORDER BY a.reg_date ASC
+        ]]> 
+    </select>
+
+    <select id="getIndustryRawData" resultMap="rawDataMap">
+       <![CDATA[
+       SELECT a.industry_code AS company_code
+            , a.reg_date
+            , c.industry_name  AS company_name
+            , b.open_price
+            , b.high_price
+            , b.low_price
+            , b.close_price
+            , b.volume
+            , '0'              AS updown_ratio
+            , a.personal
+            , (a.foreigner+a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp) AS power
+            , (a.foreigner+ a.invest_trust +  a.pension ) AS leader
+            , a.foreigner
+            , ( a.fin_invest + a.insurance + a.invest_trust + a.bank + a.etc_fin + a.pension + a.private_fund + a.nation + a.etc_foreigner+ a.etc_corp ) AS org_sum
+            , a.fin_invest
+            , a.insurance
+            , a.invest_trust
+            , a.bank
+            , a.etc_fin
+            , a.pension
+            , a.etc_corp
+            , a.etc_foreigner
+            , a.private_fund
+            , a.nation
+         FROM industry_investors a
+            , industry_price b
+            , industry c
+        WHERE a.industry_code = b.industry_code
+          AND a.industry_code = c.industry_code
+          AND a.reg_date = b.reg_date
+          AND a.industry_code = #{companyCode}
+           ORDER BY a.reg_date ASC
+        ]]> 
+    </select>
+     
+</mapper>

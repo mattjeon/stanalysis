@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper Element 의 namespace Attribute 에는 MyBatis XML Mapper 와 매핑될 Java Interface Mapper 와 동일한 패키지 위치로 작성합니다 -->
+<mapper namespace="com.mattjeon.stock.mapper.FundamentalMapper">
+    <resultMap id="fundamentalMap" type="com.mattjeon.stock.vo.FundamentalVo">
+        <id     property="companyCode"   column="company_code" />
+        <result property="companyName"      column="company_name" />
+  		<result property="regDate"      column="reg_date" />
+  		<result property="industryCode" column="industry_code" />
+  		<result property="industryName" column="industry_name" />
+  		<result property="marketKind" column="market_kind" />
+  		<result property="kospi200" column="kospi200" />
+  		<result property="supervision" column="supervision" />
+  		<result property="controlKind" column="control_kind" />
+  		<result property="statusKind" column="status_kind" />
+  		
+  		<result property="closePrice"      column="close_price" />
+  		<result property="totalStocks"  column="total_stocks" />
+  		<result property="totalStockPrice"  column="total_stock_price" />
+  		<result property="capital"      column="capital" />
+  		<result property="faceValue"    column="face_value" />
+
+  		<result property="yPbr"          column="y_pbr" />
+  		<result property="yPer"          column="y_per" />
+  		<result property="yEps"          column="y_eps" />
+  		<result property="yRoe"          column="y_roe" />
+  		<result property="yBps"          column="y_bps" />
+
+  		<result property="ySalesRiseRatio" column="y_sales_rise_ratio" />
+  		<result property="yBusinessProfitRiseRatio" column="y_business_profit_rise_ratio" />
+  		<result property="yNetProfitRiseRatio"      column="y_net_profit_rise_ratio" />
+
+  		<result property="ySales"           column="y_sales" />
+  		<result property="yBusinessProfit"  column="y_business_profit" />
+  		<result property="yTermNetProfit"   column="y_term_net_profit" />
+
+  		<result property="yRetentionRatio"          column="y_retention_ratio" />
+  		<result property="yDebtRatio"   column="y_debt_ratio" />
+  		<result property="ySettingYyyymm"            column="y_setting_yyyymm" />
+
+  		<result property="qPbr"          column="q_pbr" />
+  		<result property="qPer"          column="q_per" />
+  		<result property="qEps"          column="q_eps" />
+  		<result property="qRoe"          column="q_roe" />
+  		<result property="qBps"          column="q_bps" />
+
+  		<result property="qSalesRiseRatio"  column="q_sales_rise_ratio" />
+  		<result property="qBusinessProfitRiseRatio" column="q_business_profit_rise_ratio" />
+  		<result property="qNetProfitRiseRatio"      column="q_net_profit_rise_ratio" />
+
+  		<result property="qSales"           column="q_sales" />
+  		<result property="qBusinessProfit"  column="q_business_profit" />
+  		<result property="qTermNetProfit"   column="q_term_net_profit" />
+
+  		<result property="qRetentionRatio"          column="q_retention_ratio" />
+  		<result property="qDebtRatio"               column="q_debt_ratio" />
+  		<result property="qSettingYyyymm"   column="q_setting_yyyymm" />
+  		</resultMap>
+
+    <select id="getFundamental" resultMap="fundamentalMap">
+    	<![CDATA[
+		SELECT   a.company_code                  AS company_code    
+             ,   c.company_name                  AS company_name                                             
+			 ,   a.reg_date                      AS reg_date      
+			 ,   c.industry_code                 AS industry_code
+			 ,   d.industry_name                 AS industry_name
+			 ,   c.kospi200						 AS kospi200
+			 ,   CASE c.market_kind 
+			      WHEN '1' THEN '거래소' 
+			      WHEN '2' THEN '코스닥' 
+			      WHEN '3' THEN '프리보드' 
+			      WHEN '4' THEN 'KRX'
+			      ELSE '없음' END                     AS market_kind
+			 ,   CASE c.supervision 
+			      WHEN '0' THEN '일반' 
+			      WHEN '1' THEN '관리' 
+			      ELSE '' END                    AS supervision
+			 ,   CASE c.control_kind 
+			      WHEN '0' THEN '정상' 
+			      WHEN '1' THEN '주의' 
+			      WHEN '2' THEN '경고' 
+			      WHEN '3' THEN '위험예고' 
+			      WHEN '4' THEN '위험' 
+			      ELSE '' END                    AS control_kind
+			 ,   CASE c.status_kind 
+			      WHEN '0' THEN '정상' 
+			      WHEN '1' THEN '거래정지' 
+			      WHEN '2' THEN '거래중단' 
+			      ELSE '' END                    AS status_kind
+
+			 ,   a.total_stocks                  AS total_stocks
+			 ,   b.CLOSE_PRICE                     AS close_price
+			 ,   (a.total_stocks*b.CLOSE_PRICE)   AS total_stock_price
+			 ,   a.capital                       AS capital                                                      
+			 ,   a.face_value                    AS face_value                                                   
+			 
+             ,   b.close_price/a.y_bps   AS y_pbr	                     
+			 ,   b.close_price/(a.y_term_net_profit/a.total_stocks)   AS y_per                                                          
+			 ,   (a.y_term_net_profit/a.total_stocks)            AS y_eps                                                          
+			 ,   a.y_bps                         AS y_bps                                                        
+			 ,   a.y_return_of_equity            AS y_roe                                           
+			 
+             ,   a.y_sales                       AS y_sales                                                      
+			 ,   a.y_business_profit             AS y_business_profit                                            
+			 ,   a.y_term_net_profit             AS y_term_net_profit                                            
+			 
+             ,   a.y_sales_rise_ratio            AS y_sales_rise_ratio                                           
+			 ,   a.y_business_profit_rise_ratio  AS y_business_profit_rise_ratio                                 
+			 ,   a.y_net_profit_rise_ratio       AS y_net_profit_rise_ratio                                      
+			 
+             ,   a.y_retention_ratio             AS y_retention_ratio                                            
+			 ,   a.y_debt_ratio                  AS y_debt_ratio                                                 
+			 ,   a.y_setting_yyyymm              AS y_setting_yyyymm                                             
+			 
+             ,   b.close_price/a.q_bps  AS q_pbr	                     
+			 ,   b.close_price/(a.q_term_net_profit/a.total_stocks)  AS q_per                                                          
+			 ,   (a.q_term_net_profit/a.total_stocks)          AS q_eps                                                          
+			 ,   a.q_bps                         AS q_bps      
+             ,   a.q_roe                         AS q_roe                                                        
+			 
+			 ,   a.q_sales_rise_ratio            AS q_sales_rise_ratio                                           
+			 ,   a.q_business_profit_rise_ratio  AS q_business_profit_rise_ratio                                 
+			 ,   a.q_net_profit_rise_ratio       AS q_net_profit_rise_ratio                                      
+			 
+             ,   a.q_sales                       AS q_sales                                                      
+			 ,   a.q_business_profit             AS q_business_profit                                            
+			 ,   a.q_term_net_profit             AS q_term_net_profit                                            
+			 
+             ,   a.q_retention_ratio             AS q_retention_ratio                                            
+			 ,   a.q_debt_ratio                  AS q_debt_ratio                                                 
+			 ,   a.q_setting_yyyymm              AS q_setting_yyyymm                                             
+
+         FROM stock.company_fundamental a
+			, stock.company_price b
+            , stock.company c
+            , stock.industry d
+        WHERE a.company_code = b.company_code
+          AND a.company_code = c.company_code
+          AND a.reg_date = b.reg_date
+          AND c.industry_code = d.industry_code
+          AND a.company_code = #{companyCode}
+        ORDER BY a.reg_date DESC
+        LIMIT 1 
+          ]]>
+    </select>
+
+<!--    <select id="getFundamental" resultMap="fundamentalMap">
+    	<![CDATA[
+		SELECT   distinct a.company_code                  AS company_code    
+             ,   c.company_name                  AS company_name                                             
+			 ,   c.industry_code                 AS industry_code
+			 ,   d.industry_name                 AS industry_name
+			 ,   CASE c.market_kind 
+			      WHEN '1' THEN '거래소' 
+			      WHEN '2' THEN '코스닥' 
+			      WHEN '3' THEN '프리보드' 
+			      WHEN '4' THEN 'KRX'
+			      ELSE '없음' END                     AS market_kind
+			 ,   c.kospi200						 AS kospi200
+             ,   a.total_stocks                  AS total_stocks
+			 ,   b.CLOSE_PRICE                     AS close_price
+			 ,   (a.total_stocks*b.CLOSE_PRICE)   AS total_stock_price
+			 ,   a.capital                       AS capital                                                      
+			 ,   a.face_value                    AS face_value   
+             
+             ,   b.close_price/a.y_bps   AS y_pbr	                     
+			 ,   b.close_price/(a.y_term_net_profit/a.total_stocks)   AS y_per                                                          
+			 ,   (a.y_term_net_profit/a.total_stocks)            AS y_eps                                                          
+			 ,   a.y_bps                         AS y_bps                                                        
+			 ,   a.y_return_of_equity            AS y_roe                                           
+			 
+             ,   a.y_sales                       AS y_sales                                                      
+			 ,   a.y_business_profit             AS y_business_profit                                            
+			 ,   a.y_term_net_profit             AS y_term_net_profit                                            
+			 
+             ,   a.y_sales_rise_ratio            AS y_sales_rise_ratio                                           
+			 ,   a.y_business_profit_rise_ratio  AS y_business_profit_rise_ratio                                 
+			 ,   a.y_net_profit_rise_ratio       AS y_net_profit_rise_ratio                                      
+			 
+             ,   a.y_retention_ratio             AS y_retention_ratio                                            
+			 ,   a.y_debt_ratio                  AS y_debt_ratio                                                 
+			 ,   a.y_setting_yyyymm              AS y_setting_yyyymm                                             
+			 
+             ,   b.close_price/a.q_bps  AS q_pbr	                     
+			 ,   b.close_price/(a.q_term_net_profit*4/a.total_stocks)  AS q_per                                                          
+			 ,   (a.q_term_net_profit/a.total_stocks)*4          AS q_eps                                                          
+			 ,   a.q_bps                         AS q_bps      
+             ,   a.q_roe                         AS q_roe                                                        
+			 
+			 ,   a.q_sales_rise_ratio            AS q_sales_rise_ratio                                           
+			 ,   a.q_business_profit_rise_ratio  AS q_business_profit_rise_ratio                                 
+			 ,   a.q_net_profit_rise_ratio       AS q_net_profit_rise_ratio                                      
+			 
+             ,   a.q_sales                       AS q_sales                                                      
+			 ,   a.q_business_profit             AS q_business_profit                                            
+			 ,   a.q_term_net_profit             AS q_term_net_profit                                            
+			 
+             ,   a.q_retention_ratio             AS q_retention_ratio                                            
+			 ,   a.q_debt_ratio                  AS q_debt_ratio                                                 
+			 ,   a.q_setting_yyyymm              AS q_setting_yyyymm                                             
+
+         FROM stock.company_fundamental a
+			, stock.company_price b
+            , stock.company c
+            , stock.industry d
+        WHERE a.company_code = b.company_code
+          AND a.company_code = c.company_code
+          AND a.reg_date = b.reg_date
+          AND c.industry_code = d.industry_code
+          AND a.company_code = #{companyCode}
+		GROUP BY a.company_code, a.q_setting_yyyymm
+        ORDER BY a.q_setting_yyyymm DESC, a.reg_date DESC
+          ]]>
+    </select>
+ --> 
+   
+<!--   
+ 	<select id="getGoodCompanyList" resultMap="fundamentalMap">
+		 <![CDATA[   
+        SELECT a.company_code              AS company_code 
+			 , a.company_name           AS company_name
+			 , a.INDUSTRY_CODE AS industry_code 
+			 , SUM( b.FOREIGNER +  b.invest_trust + b.pension) AS power_sum
+             , SUM( b.FOREIGNER +  b.invest_trust + b.pension )*100 / d.total_stocks AS total_stocks_ratio
+             , c.close_price/(d.q_term_net_profit*4/d.total_stocks) AS q_per
+		     , c.close_price/d.q_bps AS q_bpr
+             , c.close_price/(d.y_term_net_profit/d.total_stocks) AS y_per
+			 , c.close_price/d.y_bps AS y_pbr
+             , c.close_price AS close_price
+             , c.reg_date AS reg_date
+		FROM  stock.company a
+			, stock.company_investors b
+            , stock.company_price c
+            , stock.company_fundamental d
+	   WHERE  a.COMPANY_CODE = b.COMPANY_CODE
+		 AND  a.company_code = c.company_code
+         AND  b.reg_date = c.reg_date
+		 AND  a.industry_code BETWEEN '002' AND '699'
+         AND  a.company_code = d.company_code
+		 AND c.reg_date = d.reg_date
+		 AND ( c.close_price/d.y_bps <= 0.8 
+		     OR d.y_return_of_equity >= 5 )
+		 AND (d.Q_DEBT_RATIO * 2 ) < d.Q_RETENTION_RATIO  
+		 AND b.reg_date BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 14 DAY), '%Y%m%d') AND DATE_FORMAT(CURDATE(), '%Y%m%d')
+		  group by a.COMPANY_NAME, a.COMPANY_CODE, a.INDUSTRY_CODE
+		  HAVING power_sum > 0
+	         AND total_stocks_ratio > 0.05
+	      ORDER BY power_sum DESC
+          ]]>
+    </select>
+ -->
+
+	<select id="getGoodCompanyList" resultMap="fundamentalMap">
+		 <![CDATA[
+		select a.company_code 
+			 , c.COMPANY_name
+		     , c.INDUSTRY_CODE
+		  from stock.company_fundamental a
+			 , stock.company_price b
+		     , stock.company c
+		  where a.company_code = b.company_code
+		    and a.company_code = c.company_code
+		    AND c.industry_code BETWEEN '002' AND '698'
+		    and a.reg_date = b.reg_date
+		    and b.reg_Date = ( SELECT MAX(t.reg_date) FROM stock.company_price t )
+		    and ( (a.total_stocks*b.close_price) > 500000000000
+		       or c.kospi200 != 0 )
+		 ]]>
+     </select>
+
+ 
+<!-- 
+	<select id="getGoodCompanyList" resultMap="fundamentalMap">
+		 <![CDATA[
+			   SELECT a.company_code              AS company_code 
+					 , a.company_name           AS company_name
+					 , a.INDUSTRY_CODE AS industry_code 
+					 , SUM( b.FOREIGNER + b.invest_trust + b.pension + b.private_fund ) AS power_sum
+				FROM  stock.company a
+					, stock.company_investors b
+			   WHERE  a.COMPANY_CODE = b.COMPANY_CODE
+				 AND a.industry_code BETWEEN '002' AND '699'
+				 AND b.reg_date BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY), '%Y%m%d') AND DATE_FORMAT(CURDATE(), '%Y%m%d')
+			  group by a.COMPANY_NAME, a.COMPANY_CODE, a.INDUSTRY_CODE
+			  ORDER BY power_sum DESC
+		      LIMIT 300 
+		 ]]>
+     </select>
+     AND b.Q_DEBT_RATIO <= 100
+            AND b.Q_RETENTION_RATIO >= 150
+            AND (b.Q_DEBT_RATIO * 2 ) < b.Q_RETENTION_RATIO 
+            AND b.q_roe >= 1
+            AND c.close_price/b.q_bps  <= 1.5	                     
+			AND c.close_price/(b.q_term_net_profit*4/b.total_stocks)  >= 0
+		    AND b.y_return_of_equity >= 1
+            AND c.close_price/b.y_bps  <= 1.5	                     
+			AND c.close_price/(b.y_term_net_profit/b.total_stocks)  >= 0
+		    
+ -->
+<!-- 
+	<select id="getGoodCompanyList" resultMap="fundamentalMap">
+		 <![CDATA[
+		SELECT DISTINCT p.company_code AS company_code
+			 , p.company_name AS company_name
+		     , p.industry_code AS industry_code
+		  FROM (
+		     SELECT  t.company_code AS company_code
+		          ,  t.company_name AS company_name
+		          ,  t.industry_code AS industry_code
+		 		  ,   @ROWNUM := @ROWNUM + 1 AS rownum
+		 	   FROM ( SELECT c.company_code              AS company_code 
+							 , c.company_name           AS company_name
+							 , c.INDUSTRY_CODE AS industry_code 
+						FROM  stock.company c
+							, stock.company_fundamental d
+							, stock.company_investors e
+					   WHERE  c.COMPANY_CODE = d.COMPANY_CODE
+                         AND  c.COMPANY_CODE = e.COMPANY_CODE
+                         AND  d.reg_date = e.reg_date
+                         AND   d.reg_date =  ( SELECT MAX(f.reg_date) 
+						          					   FROM stock.company_fundamental f 
+						          					  WHERE f.company_code = 'A005930' ) 
+						 AND c.industry_code BETWEEN '002' AND '699'
+				         AND (d.q_debt_ratio * 2) < d.Q_RETENTION_RATIO
+				         AND d.q_debt_ratio < 150
+					     AND ( e.FOREIGNER > 0 AND e.INVEST_TRUST > 0 )
+						 AND ( e.foreigner + e.org_sum ) > 0
+					  ) t
+					, (SELECT @ROWNUM := 0) R
+					
+			UNION
+		
+				SELECT a.company_code                  AS company_code 
+					 , c.company_name                  AS company_name
+		             , c.INDUSTRY_CODE                 AS industry_code
+					 , 0 AS rownum
+		         FROM stock.company_fundamental a
+		             , stock.company_price b
+		             , stock.company c
+		        WHERE a.company_code = b.COMPANY_CODE
+		          AND a.company_code = c.company_code
+		          AND b.reg_date = ( SELECT MAX(f.reg_date) 
+		          					   FROM stock.company_price f 
+		          					  WHERE f.company_code = 'A005930' ) 
+		          AND a.reg_date = ( SELECT MAX(f.reg_date)
+			                           FROM stock.company_fundamental f
+									  WHERE f.company_code = 'A005930' )
+		          AND ( a.Y_BUSINESS_PROFIT > 0 AND a.q_BUSINESS_PROFIT > 0 )
+				  AND (a.q_debt_ratio * 2) < a.Q_RETENTION_RATIO
+				  AND a.q_debt_ratio <= 100
+				  AND (b.close_price/a.q_bps) <= 1.2
+				  AND (b.close_price/a.q_bps) > 0.2
+		        ) p
+		  ORDER BY p.company_code
+		 ]]>
+     </select>
+ -->
+
+
+</mapper>
+
