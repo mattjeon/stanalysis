@@ -4,7 +4,7 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<!doctype html>
+<!doctype html> 
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
